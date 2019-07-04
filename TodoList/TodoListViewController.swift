@@ -11,7 +11,7 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     
-    let itemArray = ["A","B","C","D","E"]
+    var itemArray = ["A","B","C","D","E"]
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -38,10 +38,38 @@ class TodoListViewController: UITableViewController {
         }
         else{
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-            print(itemArray[indexPath.row] + " selected")
+            print(itemArray[indexPath.row] + " deselected")
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+    
+    
+    @IBAction func addButtonTapped(_ sender: Any) {
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Add new todo item", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add item", style: .default) { (action) in
+            // adding data into the item array
+            guard textField.text == nil && textField.text != "" else{
+                if textField.text != ""{
+                    self.itemArray.append(textField.text!)
+                    self.tableView.reloadData()
+                }
+                return
+            }
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Creat a new item"
+            textField = alertTextField
+            
+        }
+        
+        
+        alert.addAction(action)
+        
+        present(alert,animated: true,completion: nil)
         
     }
     
