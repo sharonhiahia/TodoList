@@ -9,11 +9,18 @@
 import UIKit
 
 class TodoListViewController: UITableViewController {
-
+    
+    let defaults = UserDefaults.standard
     
     var itemArray = ["A","B","C","D","E"]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -38,7 +45,7 @@ class TodoListViewController: UITableViewController {
         }
         else{
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-            print(itemArray[indexPath.row] + " deselected")
+            print(itemArray[indexPath.row] + " selected")
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -54,6 +61,10 @@ class TodoListViewController: UITableViewController {
             guard textField.text == nil && textField.text != "" else{
                 if textField.text != ""{
                     self.itemArray.append(textField.text!)
+                    
+                    // stored in plist
+                    self.defaults.set(self.itemArray, forKey: "TodoListArray")
+                    
                     self.tableView.reloadData()
                 }
                 return
