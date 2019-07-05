@@ -56,17 +56,21 @@ class TodoListViewController: UITableViewController {
         catch{
             print("Problem with loading item \(error)")
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     // internal, external and default parameters
-    private func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()){
+    private func loadItems(with request : NSFetchRequest<Item>  = Item.fetchRequest() ){
+        
         do {
             itemArray = try context.fetch(request)
         }
         catch{
             print("feching error \(error)")
         }
+        
+        // !!!reload is important
+        tableView.reloadData()
     }
 
     @IBAction func addButtonTapped(_ sender: Any) {
@@ -95,7 +99,6 @@ class TodoListViewController: UITableViewController {
         }
         alert.addAction(action)
         present(alert,animated: true,completion: nil)
-        
     }    
 
 }
@@ -106,20 +109,22 @@ extension TodoListViewController : UISearchBarDelegate{
         let request : NSFetchRequest<Item> = Item.fetchRequest()
         // case and dicretive in-sensetive
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         loadItems(with: request)
+
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0{
             loadItems()
-            
+
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }
-            
         }
     }
+    
 }
 
