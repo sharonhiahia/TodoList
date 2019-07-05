@@ -7,15 +7,13 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
 
     // Class constants and variables
-    var categoryArray = [Category]()
-    
-
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var categories : Results<Category>?
+    let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +24,7 @@ class CategoryViewController: UITableViewController {
 
     // MARK: - TableView DataSource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoryArray.count
+        return categories?.count ?? 1
     }
     
     
@@ -34,9 +32,7 @@ class CategoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        let category = categoryArray[indexPath.row]
-        
-        cell.textLabel?.text = category.name
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No category added yet :)"
         
         return cell
     }
@@ -48,6 +44,7 @@ class CategoryViewController: UITableViewController {
         performSegue(withIdentifier: "goToItems", sender: self)
         
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! TodoListViewController
         
@@ -55,13 +52,17 @@ class CategoryViewController: UITableViewController {
             print("indexPath is nil when preparing for segue")
             return
         }
-        destinationVC.selectedCategory = categoryArray[indexPath.row]
+        destinationVC.selectedCategory = categories?[indexPath.row]
     }
     
+    
     // MARK: - Data Manipulation Methods
-    private func saveCategories(){
+    private func saveCategories(with category: Category){
         do{
-            try context.save()
+            try realm.write {
+                realm.add(category)
+                print("\(category.name) added")
+            }
         }
         catch{
             print("Problem with saving category \(error)")
@@ -69,14 +70,9 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    private func loadCategories(with request : NSFetchRequest<Category>  = Category.fetchRequest() ){
-        
-        do {
-            categoryArray = try context.fetch(request)
-        }
-        catch{
-            print("feching error \(error)")
-        }
+    private func loadCategories(){
+        print("loading categories")
+        categories = realm.objects(Category.self)
         tableView.reloadData()
     }
     
@@ -88,26 +84,21 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add new todo category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add category", style: .default) { (action) in
             
-            // adding data into the categoryArray
-            guard textField.text == nil && textField.text != "" else{
-                if textField.text != ""{
-                    let category = Category(context: self.context)
-                    category.name = textField.text!
-                    self.categoryArray.append(category)
-                    
-                    // stored
-                    self.saveCategories()
-                }
-                return
-            }
+            let category = Category()
+            category.name = textField.text!
+            // stored
+            self.saveCategories(with: category)
         }
+        
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Creat a new category"
             textField = alertTextField
             
         }
+        
         alert.addAction(action)
         present(alert,animated: true,completion: nil)
+        
     }
 
 }
