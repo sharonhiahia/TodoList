@@ -10,10 +10,10 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    let defaults = UserDefaults.standard
+    //let defaults = UserDefaults.standard
     
     var itemArray = [Item]()
-    
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in:.userDomainMask).first?.appendingPathComponent("Items.plist")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,15 +21,19 @@ class TodoListViewController: UITableViewController {
 
         // Do any additional setup after loading the view.
         
-        for i in 0...30 {
-            let newItem = Item()
-            newItem.title = "\(i) th item"
-            itemArray.append(newItem)
-        }
         
-        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
-            itemArray = items
-        }
+//        for i in 0...5 {
+//            let newItem = Item()
+//            newItem.title = "\(i) th item"
+//            itemArray.append(newItem)
+//        }
+        
+        // load data here
+        loadItems()
+        
+//        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
+//            itemArray = items
+//        }
     }
     
     
@@ -57,12 +61,40 @@ class TodoListViewController: UITableViewController {
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
 
-        tableView.reloadData()
+        saveItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
+    
+    private func saveItems(){
+        let encoder = PropertyListEncoder()
+        do{
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+            
+        }
+        catch{
+            print("Problem with loading item")
+        }
+        self.tableView.reloadData()
+    }
+    
+    private func loadItems(){
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
+            do{
+                itemArray = try decoder.decode([Item].self, from: data)
+                
+            }
+            catch{
+                print("error loading data \(error)")
+            }
+        }
+        
+        
+    }
     
     @IBAction func addButtonTapped(_ sender: Any) {
         var textField = UITextField()
@@ -78,9 +110,10 @@ class TodoListViewController: UITableViewController {
                     self.itemArray.append(item)
                     
                     // stored in plist
-                    self.defaults.set(self.itemArray, forKey: "TodoListArray")
+                    //self.defaults.set(self.itemArray, forKey: "TodoListArray")
+                    self.saveItems()
                     
-                    self.tableView.reloadData()
+                    
                 }
                 return
             }
