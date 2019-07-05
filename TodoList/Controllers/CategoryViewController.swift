@@ -61,7 +61,7 @@ class CategoryViewController: UITableViewController {
             print("indexPath is nil when preparing for segue")
             return
         }
-        destinationVC.selectedCategor = categoryArray[indexPath.row]
+        destinationVC.selectedCategory = categoryArray[indexPath.row]
     }
     
     // MARK: - Data Manipulation Methods
