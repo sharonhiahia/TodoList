@@ -27,7 +27,7 @@ class TodoListViewController: UITableViewController {
 
     }
     
-    
+    // MARK: - TableView DataSource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
@@ -45,7 +45,7 @@ class TodoListViewController: UITableViewController {
         return cell
     }
     
-    
+    // MARK: - TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
@@ -56,6 +56,7 @@ class TodoListViewController: UITableViewController {
         
     }
     
+    // MARK: - Data Manipulation Methods
     private func saveItems(){
         do{
            try context.save()
@@ -71,17 +72,6 @@ class TodoListViewController: UITableViewController {
     private func loadItems(with request : NSFetchRequest<Item>  = Item.fetchRequest(), use predicate: NSPredicate? = nil){
         
         let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-        
-//        // if passinPredicate is nil, set the predicate as what it should be from the request
-//        guard let passinPredicate = predicate else{
-//
-//            request.predicate = categoryPredicate
-//            return
-//        }
-//        // if passinPredicate is not nil (ie. past the guard), then set the predicate as a compound
-//        // predicate
-//        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, passinPredicate])
-        
         
         if let passinPredicate = predicate{
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, passinPredicate])
@@ -100,6 +90,8 @@ class TodoListViewController: UITableViewController {
         // !!!reload is important
         tableView.reloadData()
     }
+    
+    // MARK: - Add New Item
 
     @IBAction func addButtonTapped(_ sender: Any) {
         var textField = UITextField()

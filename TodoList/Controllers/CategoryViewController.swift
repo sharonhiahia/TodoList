@@ -19,9 +19,9 @@ class CategoryViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         loadCategories()
-
-
+        
     }
 
     // MARK: - TableView DataSource Methods
@@ -37,7 +37,6 @@ class CategoryViewController: UITableViewController {
         let category = categoryArray[indexPath.row]
         
         cell.textLabel?.text = category.name
-        //cell.accessoryType = item.done ? .checkmark : .none
         
         return cell
     }
@@ -46,12 +45,7 @@ class CategoryViewController: UITableViewController {
     // MARK: - TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
         performSegue(withIdentifier: "goToItems", sender: self)
-        //categoryArray[indexPath.row].done = !categoryArray[indexPath.row].done
-        //itemArray[indexPath.row].setValue(true, forKey: "done")
-        //saveCategories()
-        //tableView.deselectRow(at: indexPath, animated: true)
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -68,7 +62,6 @@ class CategoryViewController: UITableViewController {
     private func saveCategories(){
         do{
             try context.save()
-            
         }
         catch{
             print("Problem with saving category \(error)")
@@ -84,8 +77,6 @@ class CategoryViewController: UITableViewController {
         catch{
             print("feching error \(error)")
         }
-        
-        // !!!reload is important
         tableView.reloadData()
     }
     
@@ -117,10 +108,6 @@ class CategoryViewController: UITableViewController {
         }
         alert.addAction(action)
         present(alert,animated: true,completion: nil)
-    
     }
-    
-
-
 
 }
