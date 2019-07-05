@@ -54,7 +54,7 @@ class TodoListViewController: UITableViewController {
             
         }
         catch{
-            print("Problem with loading item \(error)")
+            print("Problem with saving item \(error)")
         }
         tableView.reloadData()
     }
