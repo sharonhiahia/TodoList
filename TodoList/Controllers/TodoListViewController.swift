@@ -27,9 +27,9 @@ class TodoListViewController: UITableViewController {
             itemArray.append(newItem)
         }
         
-//        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
-//            itemArray = items
-//        }
+        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
+            itemArray = items
+        }
     }
     
     
@@ -97,13 +97,7 @@ class TodoListViewController: UITableViewController {
         
         present(alert,animated: true,completion: nil)
         
-    }
-    
-//    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        tableView.cellForRow(at: indexPath)?.accessoryType = .none
-//        tableView.deselectRow(at: indexPath, animated: true)
-//    }
-    
+    }    
 
 }
 

@@ -37,30 +37,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		968A7B0222CED4D400675ABE /* Model */ = {
+		968A7B0222CED4D400675ABE /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				968A7B0022CED4C600675ABE /* Item.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		968A7B0322CED4E400675ABE /* View */ = {
+		968A7B0322CED4E400675ABE /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				96E1D64522CE9981008524CF /* Main.storyboard */,
 				96E1D64A22CE9982008524CF /* LaunchScreen.storyboard */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		968A7B0522CED4F900675ABE /* Controller */ = {
+		968A7B0522CED4F900675ABE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				96E1D64122CE9981008524CF /* AppDelegate.swift */,
 				96E1D64322CE9981008524CF /* TodoListViewController.swift */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		968A7B0622CED53300675ABE /* Source */ = {
@@ -90,11 +90,11 @@
 		96E1D64022CE9981008524CF /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
-				96E1D64D22CE9982008524CF /* Info.plist */,
-				968A7B0222CED4D400675ABE /* Model */,
-				968A7B0322CED4E400675ABE /* View */,
-				968A7B0522CED4F900675ABE /* Controller */,
+				968A7B0222CED4D400675ABE /* Models */,
+				968A7B0322CED4E400675ABE /* Views */,
+				968A7B0522CED4F900675ABE /* Controllers */,
 				968A7B0622CED53300675ABE /* Source */,
+				96E1D64D22CE9982008524CF /* Info.plist */,
 			);
 			path = TodoList;
 			sourceTree = "<group>";
