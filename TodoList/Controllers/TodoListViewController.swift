@@ -86,9 +86,6 @@ class TodoListViewController: UITableViewController {
                         let item = Item()
                         item.title = textField.text!
                         item.dateCreated = Date()
-                        
-                        // stored
-                        //self.saveItems(with: item)
                         currentCategory.items.append(item)
                     }
                 }
